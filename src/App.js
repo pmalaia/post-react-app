@@ -1,37 +1,47 @@
 import React, { useState, useRef } from "react";
-import PostList from './components/PostList';
-import CommonButton from "./components/UI/button/CommonButton";
-import CommonInput from "./components/UI/input/CommonInput";
-import './styles/App.css'
+import PostForm from "./components/PostForm";
+import PostList from "./components/PostList";
+import CommonSelect from "./components/UI/select/CommonSelect";
+import "./styles/App.css";
 
 function App() {
+  const [posts, setPosts] = useState([
+    { id: 1, title: "dsd", body: "rrr" },
+    { id: 2, title: "aaa", body: "qqq" },
+    { id: 3, title: "fff", body: "nnn" },
+    { id: 4, title: "kkk", body: "aaa" },
+  ]);
+  const [selectedSort, setSelectedSort] = useState('')
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost]);
+  };
 
-  const [posts, setPosts ] = useState([
-    {id: 1, title: 'JS1', body: 'Description'},
-    {id: 2, title: 'JS2', body: 'Description'},
-    {id: 3, title: 'JS3', body: 'Description'},
-    {id: 4, title: 'JS4', body: 'Description'},
-  ])
-
-  const [post, setPost] = useState({
-    title: '',
-    body: ''
-  })
-
-  const AddNewPost = (e) => {
-    e.preventDefault()
-    setPosts([...posts, {...post, id: Date.now}])
-    setPost({    title: '', body: ''})
+  const removePost = (post) => {
+    setPosts(posts.filter((p) => p.id !== post.id));
+  };
+  const sortPosts = (sort) => {
+    setSelectedSort(sort)
+    setPosts([...posts].sort((a,b) => a[sort].localeCompare(b[sort])))
   }
   return (
-    <div className="App"> 
-    <form>
-      <CommonInput value={post.title} onChange={e => setPost({...post, title:e.target.value})} type="text" placeholder="Название поста"/>
-      <CommonInput value={post.body} onChange={e => setPost({...post, body: e.target.value})} type="text" placeholder="Описание поста"/>
-      <CommonButton onClick={AddNewPost}>Создать пост</CommonButton>
-    </form>
-    <PostList posts={posts} title="Список постов 1"/>
-    </div> 
+    <div className="App">
+      <PostForm create={createPost} />
+      <div>
+        <CommonSelect 
+        value={selectedSort}
+        onChange={sortPosts}
+        defaultValue="Сортировка" 
+        options={[
+          {value: 'title', name: 'По названию'},
+          {value:'body', name: 'По описанию'}
+        ]}/>
+      </div>
+      {posts.length !== 0 ? (
+        <PostList remove={removePost} posts={posts} title="Список постов" />
+      ) : (
+        <h1 style={{ textAlign: "center" }}>Посты не найдены</h1>
+      )}
+    </div>
   );
 }
 
