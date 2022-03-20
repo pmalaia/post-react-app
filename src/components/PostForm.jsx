@@ -15,21 +15,19 @@ const PostForm = ({create}) => {
       }
       return (
       <form>
-      {/*Управляемый компонент*/}
       <CommonInput
           value={post.title}
           onChange={e => setPost({...post, title: e.target.value})}
           type="text"
-          placeholder="Название поста"
+          placeholder="Post name"
       />
-      {/*Неуправляемый\Неконтролируемый компонент*/}
       <CommonInput
           value={post.body}
           onChange={e => setPost({...post, body: e.target.value})}
           type="text"
-          placeholder="Описание поста"
+          placeholder="Description"
       />
-      <CommonButton onClick={addNewPost}>Создать пост</CommonButton>
+      <CommonButton onClick={addNewPost}>Create post</CommonButton>
   </form>
       )
 }
