@@ -17,7 +17,11 @@ The user can:
 - add/remove posts
 - sort 
 - search
+- set posts limit
 - see loader
+- use infinite scroll
+- log in and log out
+
 ### CSS and libraries
 
 - react-transition-group to animate movements of the list items
